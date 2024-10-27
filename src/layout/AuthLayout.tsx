@@ -16,7 +16,7 @@ export const AuthLayout = () => {
       <div className="w-full max-w-[1300px] flex flex-col pb-4">
       <div className="h-[500px] mt-[70px] mb-4">
           <div
-            className={`w-full flex justify-center px-1`}
+            className={`w-full flex justify-center px-1 left-appear`}
           >
             <Outlet />
           </div>

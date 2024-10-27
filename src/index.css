@@ -1,14 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
   background-color: rgb(238, 238, 238);
   height: 100vh;
   width: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .gradient-bg {
@@ -21,4 +21,82 @@ body{
 
 .nav-gradient {
   background: linear-gradient(to bottom, #2c0e37, #4a1259);
+}
+
+.appear {
+  animation: scaleIn 0.2s linear;
+}
+
+.disappear {
+  animation: scaleOut 0.2s linear;
+}
+
+.left-appear {
+  animation: slideInFromRight 0.2s linear;
+}
+
+.left-disappear {
+  animation: slideOutToRight 0.2s linear;
+}
+
+.menu-appear {
+  animation: fadeIn 0.2s linear;
+}
+
+.menu-disappear {
+  animation: fadeOut 0.2s linear;
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleOut {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(10rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(10rem);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

@@ -56,9 +56,9 @@ export const LoginPage = () => {
   // }
 
   return (
-    <div className="max-w-[420px] w-full flex flex-col justify-center h-[620px] pb-6 mx-auto bg-white drop-shadow-card rounded-2xl">
+    <div className="max-w-[420px] w-full flex flex-col justify-center h-[620px] pb-6 mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
       <div className="p-6 flex w-full justify-center flex-col items-center">
-        <SiCircleci className="text-blue-600" size={45} />
+        <SiCircleci className="text-primary-color" size={45} />
         <p>Nexus</p>
       </div>
 
@@ -105,11 +105,16 @@ export const LoginPage = () => {
           >
            {isLoading ? <Spinner size="sm" className="text-white"/> :  "Iniciar sesión"}
           </Button>
-          <TextButton className="text-sm" onClick={() => {}}>
-            ¿Olvidaste tu contraseña?
-          </TextButton>
         </div>
       </form>
+      <div className="w-full flex flex-col gap-3 items-center mt-4">
+      <TextButton className="text-sm text-primary-color hover:text-blue-900" onClick={() => navigate("/auth/register")}>
+            ¿Aún no tienes una cuenta?, registrate.
+          </TextButton>
+          <TextButton className="text-sm text-primary-color hover:text-blue-900" onClick={() => navigate("/auth/forgot-password")}>
+            ¿Olvidaste tu contraseña?
+          </TextButton>
+      </div>
     </div>
   );
 };
