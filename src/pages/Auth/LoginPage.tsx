@@ -11,6 +11,7 @@ import TextButton from "../../components/TextButton/TextButton";
 import { SiCircleci } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
+import { GoogleLogin } from "@react-oauth/google";
 // import Button from "../../components/Button/Button";
 
 export const LoginPage = () => {
@@ -108,13 +109,28 @@ export const LoginPage = () => {
         </div>
       </form>
       <div className="w-full flex flex-col gap-3 items-center mt-4">
-      <TextButton className="text-sm text-primary-color hover:text-blue-900" onClick={() => navigate("/auth/register")}>
-            ¿Aún no tienes una cuenta?, registrate.
-          </TextButton>
-          <TextButton className="text-sm text-primary-color hover:text-blue-900" onClick={() => navigate("/auth/forgot-password")}>
-            ¿Olvidaste tu contraseña?
-          </TextButton>
+          <GoogleLogin 
+            onSuccess={(credentialResponse) => {
+              console.log("Inicio de sesión exitoso:", credentialResponse);
+              // Aquí puedes guardar el token si necesitas almacenarlo
+              
+              // Redirige a /dashboard
+              navigate('/dashboard');
+            }} 
+            onError={() => {
+              console.error("Error al iniciar sesión con Google");
+            }}
+          />
+        <TextButton className="text-sm text-primary-color hover:text-blue-900" onClick={() => navigate("/auth/register")}>
+          ¿Aún no tienes una cuenta?, registrate.
+        </TextButton>
+        
+        <TextButton className="text-sm text-primary-color hover:text-blue-900" onClick={() => navigate("/auth/forgot-password")}>
+          ¿Olvidaste tu contraseña?
+        </TextButton>
+        
       </div>
+
     </div>
   );
 };
