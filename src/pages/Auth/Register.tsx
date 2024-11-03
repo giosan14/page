@@ -1,14 +1,26 @@
-import React, { useState } from "react";
-import { IoIosArrowBack } from "react-icons/io";
-import Input from "../../components/Input/Input";
-import Button from "../../components/Button/Button";
-import { useNavigate } from "react-router-dom";
-import { FaCheckCircle } from "react-icons/fa";
-import { Spinner } from "react-bootstrap";
-import CustomModal from "../../components/CustomModal";
+// Register.tsx
+import React, { useState } from 'react';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+import { FaCheckCircle } from 'react-icons/fa';
+import { IoIosArrowBack } from 'react-icons/io';
+import CustomModal from '../../components/CustomModal';
+import Button from '../../components/Button/Button';
+import CustomInput from '../../components/CustomInput';
+import { Spinner } from 'react-bootstrap';
 
 export const Register: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleShowModal = () => {
+    setShowModal(!showModal);
+  };
+
+  const initialValues = {
     firstName: "",
     lastName: "",
     username: "",
@@ -21,28 +33,26 @@ export const Register: React.FC = () => {
     cp: "",
     interests: "",
     hobbies: "",
+  };
+
+  const validationSchema = Yup.object({
+    firstName: Yup.string().required("Nombre es obligatorio"),
+    lastName: Yup.string().required("Apellido es obligatorio"),
+    username: Yup.string().required("Nombre de usuario es obligatorio"),
+    email: Yup.string().email("Email inválido").required("Correo electrónico es obligatorio"),
+    phoneNumber: Yup.string().required("Número de teléfono es obligatorio"),
+    birthday: Yup.date().required("Fecha de nacimiento es obligatoria"),
+    gender: Yup.string().required("Género es obligatorio"),
+    country: Yup.string().required("País es obligatorio"),
+    cityStateProvince: Yup.string().required("Ciudad/Estado/Provincia es obligatorio"),
+    cp: Yup.string().required("Código postal es obligatorio"),
+    interests: Yup.string(),
+    hobbies: Yup.string(),
   });
 
-  const [showModal, setShowModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const navigate = useNavigate();
-
-  const handleShowModal = () => {
-    setShowModal(!showModal);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleRegister = async () => {
+  const handleRegister = async (values: typeof initialValues) => {
     setIsLoading(true);
-    if (formData.email) {
+    if (values.email) {
       setTimeout(() => {
         setIsLoading(false);
         handleShowModal();
@@ -69,77 +79,66 @@ export const Register: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-[820px] w-full p-6 flex flex-col justify-start h-auto mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
-      {/* MODAL */}
-      <CustomModal
-        className="max-w-[370px]"
-        showModal={showModal}
-        handleClose={handleShowModal}
-      >
-        <div className="flex flex-col text-center items-center p-10 gap-3">
-          <FaCheckCircle className="text-primary-color text-[60px]" />
-          <h1 className="text-xl">¡Registro exitoso!</h1>
-          <p>Te enviamos un correo para verificar tu cuenta</p>
-          <p>Recuerda revisar tu carpeta de spam</p>
-          <Button
-            onClick={() => navigate("/auth/login")}
-            className="py-2 w-full"
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleRegister}
+    >
+      {({ isSubmitting }) => (
+        <Form className="max-w-[820px] w-full p-6 flex flex-col justify-start h-auto mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
+          {/* MODAL */}
+          <CustomModal
+            className="max-w-[370px]"
+            showModal={showModal}
+            handleClose={handleShowModal}
           >
-            Ingresar
-          </Button>
-        </div>
-      </CustomModal>
+            <div className="flex flex-col text-center items-center p-10 gap-3">
+              <FaCheckCircle className="text-primary-color text-[60px]" />
+              <h1 className="text-xl">¡Registro exitoso!</h1>
+              <p>Te enviamos un correo para verificar tu cuenta</p>
+              <p>Recuerda revisar tu carpeta de spam</p>
+              <Button onClick={() => navigate("/auth/login")} className="py-2 w-full">
+                Ingresar
+              </Button>
+            </div>
+          </CustomModal>
 
-      {/* CONTENIDO */}
-      <button
-        className="text-primary-color flex items-center gap-2 text-base"
-        onClick={() => navigate("/auth/login")}
-      >
-        <IoIosArrowBack />
-        Regresar
-      </button>
+          {/* CONTENIDO */}
+          <button
+            className="text-primary-color flex items-center gap-2 text-base"
+            onClick={() => navigate("/auth/login")}
+          >
+            <IoIosArrowBack />
+            Regresar
+          </button>
 
-      <div className="flex items-end mt-10 gap-3">
-        <div className="max-w-[400px] flex flex-col gap-3">
-          <h1 className="mb-2 mt-2 text-xl">
-            Por favor, llena este formulario para registrarte.
-          </h1>
-          <p className="mb-7">
-            Te enviaremos instrucciones al correo electrónico asociado a tu cuenta para verificarla.
-          </p>
-          {inputFieldsColumn1.map(({ label, name, type = "text" }) => (
-            <Input
-              key={name}
-              label={label}
-              name={name}
-              type={type}
-              onChange={handleInputChange}
-            />
-          ))}
-        </div>
+          <div className="flex flex-col sm:flex-row sm:items-end items-center mt-10 gap-3">
+            <div className="max-w-[400px] flex flex-col gap-3">
+              <h1 className="mb-2 mt-2 text-xl">
+                Por favor, llena este formulario para registrarte.
+              </h1>
+              <p className="mb-7">
+                Te enviaremos instrucciones al correo electrónico asociado a tu cuenta para verificarla.
+              </p>
+              {inputFieldsColumn1.map(({ label, name, type = "text" }) => (
+                <CustomInput className='flex flex-col' key={name} label={label} name={name} type={type} />
+              ))}
+            </div>
 
-        <div className="w-full max-w-[400px] flex flex-col gap-3">
-          {inputFieldsColumn2.map(({ label, name, type = "text" }) => (
-            <Input
-              key={name}
-              label={label}
-              name={name}
-              type={type}
-              onChange={handleInputChange}
-            />
-          ))}
-        </div>
-      </div>
+            <div className="w-full max-w-[400px] flex flex-col gap-3">
+              {inputFieldsColumn2.map(({ label, name, type = "text" }) => (
+                <CustomInput className='flex flex-col' key={name} label={label} name={name} type={type} />
+              ))}
+            </div>
+          </div>
 
-      <div className="w-full flex justify-center mt-12">
-        <Button
-          disabled={!formData.email}
-          onClick={handleRegister}
-          className="py-2 text-base"
-        >
-          {isLoading ? <Spinner size="sm" /> : "Registrarse"}
-        </Button>
-      </div>
-    </div>
+          <div className="w-full flex justify-center mt-12">
+            <Button disabled={isSubmitting} type="submit" className="py-2 text-base">
+              {isLoading ? <Spinner size="sm" /> : "Registrarse"}
+            </Button>
+          </div>
+        </Form>
+      )}
+    </Formik>
   );
 };
