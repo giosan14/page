@@ -29,12 +29,12 @@ export const LoginPage = () => {
       email: { value: string };
       password: { value: string };
     };
-    
+
     setIsLoading(true);
     if (email && password) {
       setTimeout(() => {
         setIsLoading(false);
-        navigate("/dashboard")
+        navigate("/dashboard");
       }, 1500);
     }
     console.log(email.value, password.value);
@@ -63,7 +63,10 @@ export const LoginPage = () => {
         <p>Nexus</p>
       </div>
 
-      <form className="px-12 w-full flex flex-col  text-center" onSubmit={onSubmit}>
+      <form
+        className="px-12 w-full flex flex-col  text-center"
+        onSubmit={onSubmit}
+      >
         <h1 className="mt-3 text-xl mb-10 text-main-black-100 font-bold">
           Iniciar Sesión
         </h1>
@@ -104,33 +107,41 @@ export const LoginPage = () => {
             type="submit"
             disabled={!email || !password}
           >
-           {isLoading ? <Spinner size="sm" className="text-white"/> :  "Iniciar sesión"}
+            {isLoading ? (
+              <Spinner size="sm" className="text-white" />
+            ) : (
+              "Iniciar sesión"
+            )}
           </Button>
         </div>
       </form>
       <div className="w-full flex flex-col gap-3 items-center mt-4">
-          <GoogleLogin 
-            onSuccess={(credentialResponse) => {
-              console.log("Inicio de sesión exitoso:", credentialResponse);
-              // Aquí puedes guardar el token si necesitas almacenarlo
-              
-              // Redirige a /dashboard
-              navigate('/dashboard');
-            }} 
-            onError={() => {
-              console.error("Error al iniciar sesión con Google");
-            }}
-          />
-        <TextButton className="text-sm text-primary-color hover:text-blue-900" onClick={() => navigate("/auth/register")}>
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            console.log("Inicio de sesión exitoso:", credentialResponse);
+            // Aquí puedes guardar el token si necesitas almacenarlo
+
+            // Redirige a /dashboard
+            navigate("/dashboard");
+          }}
+          onError={() => {
+            console.error("Error al iniciar sesión con Google");
+          }}
+        />
+        <TextButton
+          className="text-sm text-primary-color hover:text-blue-900"
+          onClick={() => navigate("/auth/welcome")}
+        >
           ¿Aún no tienes una cuenta?, registrate.
         </TextButton>
-        
-        <TextButton className="text-sm text-primary-color hover:text-blue-900" onClick={() => navigate("/auth/forgot-password")}>
+
+        <TextButton
+          className="text-sm text-primary-color hover:text-blue-900"
+          onClick={() => navigate("/auth/forgot-password")}
+        >
           ¿Olvidaste tu contraseña?
         </TextButton>
-        
       </div>
-
     </div>
   );
 };

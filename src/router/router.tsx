@@ -1,16 +1,17 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { Root } from '../Root';
-import DashboardLayout from '../layout/DashboardLayout';
-import RedirectBasedOnRole from './RedirectBasedOnRole';
-import { AuthLayout } from '../layout/AuthLayout';
-import { LoginPage } from '../pages/Auth/LoginPage';
-import { ForgotPassword } from '../pages/Auth/ForgotPassword';
-import { ResetPassword } from '../pages/Auth/ResetPassword';
-import { Register } from '../pages/Auth/Register';
+import { createBrowserRouter } from "react-router-dom";
+import { Root } from "../Root";
+import DashboardLayout from "../layout/DashboardLayout";
+import RedirectBasedOnRole from "./RedirectBasedOnRole";
+import { AuthLayout } from "../layout/AuthLayout";
+import { LoginPage } from "../pages/Auth/LoginPage";
+import { ForgotPassword } from "../pages/Auth/ForgotPassword";
+import { ResetPassword } from "../pages/Auth/ResetPassword";
+import { Register } from "../pages/Auth/Register";
+import Welcome from "../pages/Auth/Welcome";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Root />,
     children: [
       /// Dashboard Routes
@@ -19,30 +20,34 @@ export const router = createBrowserRouter([
         element: <RedirectBasedOnRole />,
       },
       {
-        path: 'dashboard',
+        path: "dashboard",
         element: <DashboardLayout />,
       },
-  
+
       /// Auth Routes
       {
-        path: 'auth',
+        path: "auth",
         element: <AuthLayout />,
         children: [
           {
-            path: 'login',
+            path: "login",
             element: <LoginPage />,
           },
           {
-            path: 'forgot-password',
+            path: "forgot-password",
             element: <ForgotPassword />,
           },
           {
-            path: 'reset-password',
+            path: "reset-password",
             element: <ResetPassword />,
           },
           {
-            path: 'register',
+            path: "register",
             element: <Register />,
+          },
+          {
+            path: "welcome",
+            element: <Welcome />,
           },
         ],
       },
