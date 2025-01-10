@@ -40,7 +40,7 @@ export const ForgotPassword: React.FC = () => {
     // }
   };
   return (
-    <div className="max-w-[420px] w-full p-6 flex flex-col justify-start h-[620px] mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
+    <div className="max-w-[520px] w-full p-6 flex flex-col justify-start h-[620px] mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
       {/* MODAL */}
       <CustomModal
         className="max-w-[370px]"

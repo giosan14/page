@@ -7,7 +7,7 @@ interface CustomInputProps {
     name: string;
     type?: string;
     className: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 const CustomInput: FC<CustomInputProps> = ({ label, name, type = "text", className, ...rest }) => {

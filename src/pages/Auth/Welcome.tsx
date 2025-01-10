@@ -41,7 +41,7 @@ const Welcome: React.FC = () => {
 
   const handleUserType = (type: "Doctor" | "Paciente") => {
     console.log(`El usuario seleccionó: ${type}`);
-    navigate(`/auth/register`);
+    navigate(`/auth/create-account`);
   };
 
   return (

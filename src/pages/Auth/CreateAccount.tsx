@@ -9,8 +9,9 @@ import { FaCheckCircle } from "react-icons/fa";
 import { Spinner } from "react-bootstrap";
 import { validatePassword } from "../../helpers/passwordValidation";
 import CustomModal from "../../components/CustomModal";
+import Input from "../../components/Input/Input";
 
-export const ResetPassword = () => {
+export const CreateAccount = () => {
   const navigate = useNavigate();
   // const { showErrorAlert } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,7 @@ export const ResetPassword = () => {
   // }));
 
   const [formData, setFormData] = useState({
+    email: "",
     password: "",
     confirmPassword: "",
   });
@@ -43,8 +45,7 @@ export const ResetPassword = () => {
     });
   };
 
-  const handleResetPassword = async () => {
-
+  const handleCreateAccount = async () => {
     setIsLoading(true);
     if (formData?.password && formData?.confirmPassword) {
       setTimeout(() => {
@@ -76,7 +77,7 @@ export const ResetPassword = () => {
   console.log(isSamePassword);
 
   return (
-    <div className="max-w-[520px] w-full p-6 flex flex-col justify-center h-[620px] pb-6 mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
+    <div className="max-w-[520px] w-full p-6 flex flex-col justify-center h-auto pb-6 mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
       <CustomModal
         className="max-w-[370px]"
         showModal={showModal}
@@ -84,27 +85,34 @@ export const ResetPassword = () => {
       >
         <div className="flex flex-col text-center items-center p-10 gap-3">
           <FaCheckCircle className="text-primary-color text-[60px]" />
-          <h1 className="text-xl">Contraseña reestablecida con exito</h1>
+          <h1 className="text-xl">Cuenta creada con éxito</h1>
 
-          <p>Inicia sesión con la nueva contraseña</p>
+          <p>Sigue adelante con el registro de información</p>
           <Button
-            onClick={() => navigate("/auth/login")}
+            onClick={() => navigate("/auth/register")}
             className="py-2 w-full"
           >
-            Ingresar
+            Continuar
           </Button>
         </div>
       </CustomModal>
       <div className="text-left">
-        <h1 className="mb-4 text-2xl font-bold">Cambiar contraseña</h1>
+        <h1 className="mb-4 text-2xl font-bold">Primeros pasos</h1>
         <p className="mb-7 mt-[-10px]">
-          Crea una nueva contraseña para acceder a tu cuenta
+          Por favor ingresa estos datos para crear tu cuenta.
         </p>
         <div className="mb-4">
+          <Input
+            label="Correo electrónico"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-4">
           <InputPassword
-            label="Nueva contraseña"
+            label="Contraseña"
             name="password"
-            autoComplete="off"
             value={formData.password}
             onChange={handleChange}
           />
@@ -114,7 +122,6 @@ export const ResetPassword = () => {
           <InputPassword
             label="Confirmar contraseña"
             name="confirmPassword"
-            autoComplete="off"
             value={formData.confirmPassword}
             onChange={handleChange}
           />
@@ -145,9 +152,10 @@ export const ResetPassword = () => {
               !formData.confirmPassword ||
               !formData.password ||
               !isPasswordValid ||
-              !isSamePassword
+              !isSamePassword ||
+              !formData.email
             }
-            onClick={handleResetPassword}
+            onClick={handleCreateAccount}
           >
             {isLoading ? <Spinner size="sm" /> : "Continuar"}
           </Button>
