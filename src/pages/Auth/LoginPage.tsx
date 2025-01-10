@@ -57,8 +57,8 @@ export const LoginPage = () => {
   // }
 
   return (
-    <div className="max-w-[420px] w-full flex flex-col justify-center h-[620px] pb-6 mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
-      <div className="p-6 flex w-full justify-center flex-col items-center">
+    <div className="max-w-[420px] w-full flex flex-col justify-center h-auto py-8 mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
+      <div className="flex w-full justify-center flex-col items-center">
         <SiCircleci className="text-primary-color" size={45} />
         <p>Nexus</p>
       </div>

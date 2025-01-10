@@ -8,6 +8,8 @@ import { ForgotPassword } from "../pages/Auth/ForgotPassword";
 import { ResetPassword } from "../pages/Auth/ResetPassword";
 import { Register } from "../pages/Auth/Register";
 import Welcome from "../pages/Auth/Welcome";
+import { CreateAccount } from "../pages/Auth/CreateAccount";
+import { EmailValidate } from "../pages/Auth/EmailValidate";
 
 export const router = createBrowserRouter([
   {
@@ -42,12 +44,20 @@ export const router = createBrowserRouter([
             element: <ResetPassword />,
           },
           {
+            path: "create-account",
+            element: <CreateAccount />,
+          },
+          {
             path: "register",
             element: <Register />,
           },
           {
             path: "welcome",
             element: <Welcome />,
+          },
+          {
+            path: "email-validate",
+            element: <EmailValidate />,
           },
         ],
       },

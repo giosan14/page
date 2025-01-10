@@ -39,7 +39,6 @@ export const Register: React.FC = () => {
     firstName: Yup.string().required("Nombre es obligatorio"),
     lastName: Yup.string().required("Apellido es obligatorio"),
     username: Yup.string().required("Nombre de usuario es obligatorio"),
-    email: Yup.string().email("Email inválido").required("Correo electrónico es obligatorio"),
     phoneNumber: Yup.string().required("Número de teléfono es obligatorio"),
     birthday: Yup.date().required("Fecha de nacimiento es obligatoria"),
     gender: Yup.string().required("Género es obligatorio"),
@@ -52,7 +51,7 @@ export const Register: React.FC = () => {
 
   const handleRegister = async (values: typeof initialValues) => {
     setIsLoading(true);
-    if (values.email) {
+    if (values.firstName) {
       setTimeout(() => {
         setIsLoading(false);
         handleShowModal();
@@ -61,11 +60,10 @@ export const Register: React.FC = () => {
   };
 
   const inputFieldsColumn1 = [
-    { label: "Nombre(s)", name: "firstName" },
-    { label: "Apellido(s)", name: "lastName" },
-    { label: "Nombre de usuario", name: "username" },
-    { label: "Correo electrónico", name: "email", type: "email" },
-    { label: "Número de teléfono", name: "phoneNumber" },
+    { label: "Nombre(s)", name: "firstName", type: "string"},
+    { label: "Apellido(s)", name: "lastName", type: "string" },
+    { label: "Nombre de usuario", name: "username", type: "string" },
+    { label: "Número de teléfono", name: "phoneNumber", type: "string" },
   ];
 
   const inputFieldsColumn2 = [
@@ -97,8 +95,8 @@ export const Register: React.FC = () => {
               <h1 className="text-xl">¡Registro exitoso!</h1>
               <p>Te enviamos un correo para verificar tu cuenta</p>
               <p>Recuerda revisar tu carpeta de spam</p>
-              <Button onClick={() => navigate("/auth/login")} className="py-2 w-full">
-                Ingresar
+              <Button onClick={() => navigate("/auth/email-validate")} className="py-2 w-full">
+                Validar correo
               </Button>
             </div>
           </CustomModal>
