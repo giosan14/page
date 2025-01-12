@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SiCircleci } from "react-icons/si";
+import { FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Welcome: React.FC = () => {
@@ -23,7 +23,7 @@ const Welcome: React.FC = () => {
       }, delay);
     };
 
-    typeText("Bienvenido a Nexus", setMainText, 100);
+    typeText("Bienvenido a XinapX", setMainText, 100);
 
     setTimeout(() => {
       typeText(
@@ -48,15 +48,15 @@ const Welcome: React.FC = () => {
     <div className="flex flex-col items-center justify-center max-w-[800px] w-full">
       <div className="p-8 rounded-lg text-center">
         <h1 className="text-7xl font-bold text-gray-800 mb-4">
-          {mainText.split("Nexus")[0]}
-          {mainText.includes("Nexus") && (
-            <span className="text-primary-color">Nexus</span>
+          {mainText.split("XinapX")[0]}
+          {mainText.includes("XinapX") && (
+            <span className="text-primary-color">XinapX</span>
           )}
         </h1>
 
         <div className="p-6 flex w-full justify-center flex-col items-center">
-          <SiCircleci className="text-primary-color" size={45} />
-          <p>Nexus</p>
+          <FaBrain className="text-primary-color" size={45} />
+          <p>XinapX</p>
         </div>
         <p className="text-gray-600 mb-6 text-xl">{subText}</p>
       </div>

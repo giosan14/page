@@ -95,7 +95,7 @@ export const Register: React.FC = () => {
               <h1 className="text-xl">¡Registro exitoso!</h1>
               <p>Te enviamos un correo para verificar tu cuenta</p>
               <p>Recuerda revisar tu carpeta de spam</p>
-              <Button onClick={() => navigate("/auth/email-validate")} className="py-2 w-full">
+              <Button onClick={() => navigate("/auth/form-doctor")} className="py-2 w-full">
                 Validar correo
               </Button>
             </div>
