@@ -8,10 +8,10 @@ import Input from "../../components/Input/Input";
 import InputPassword from "../../components/InputPassword/InputPassword";
 import Button from "../../components/Button/Button";
 import TextButton from "../../components/TextButton/TextButton";
-import { SiCircleci } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import { GoogleLogin } from "@react-oauth/google";
+import { FaBrain } from "react-icons/fa";
 // import Button from "../../components/Button/Button";
 
 export const LoginPage = () => {
@@ -59,8 +59,8 @@ export const LoginPage = () => {
   return (
     <div className="max-w-[420px] w-full flex flex-col justify-center h-auto py-8 mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
       <div className="flex w-full justify-center flex-col items-center">
-        <SiCircleci className="text-primary-color" size={45} />
-        <p>Nexus</p>
+        <FaBrain className="text-primary-color" size={45} />
+        <p>XinapX</p>
       </div>
 
       <form

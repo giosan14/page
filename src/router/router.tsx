@@ -10,6 +10,7 @@ import { Register } from "../pages/Auth/Register";
 import Welcome from "../pages/Auth/Welcome";
 import { CreateAccount } from "../pages/Auth/CreateAccount";
 import { EmailValidate } from "../pages/Auth/EmailValidate";
+import DoctorForm from "../pages/Auth/DoctorForm";
 
 export const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
           {
             path: "email-validate",
             element: <EmailValidate />,
+          },
+          {
+            path: "form-doctor",
+            element: <DoctorForm />,
           },
         ],
       },
