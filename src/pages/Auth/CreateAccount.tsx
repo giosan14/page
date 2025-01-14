@@ -26,6 +26,8 @@ export const CreateAccount = () => {
   // }));
 
   const [formData, setFormData] = useState({
+    name: "",
+    lastname: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -102,6 +104,20 @@ export const CreateAccount = () => {
           Por favor ingresa estos datos para crear tu cuenta.
         </p>
         <div className="mb-4">
+          <div className="flex items-center mb-4 gap-4">
+            <Input
+              label="Nombre(s)"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            <Input
+              label="Apellido(s)"
+              name="lastname"
+              value={formData.lastname}
+              onChange={handleChange}
+            />
+          </div>
           <Input
             label="Correo electrónico"
             name="email"
@@ -153,7 +169,9 @@ export const CreateAccount = () => {
               !formData.password ||
               !isPasswordValid ||
               !isSamePassword ||
-              !formData.email
+              !formData.email ||
+              !formData.name ||
+              !formData.lastname
             }
             onClick={handleCreateAccount}
           >
