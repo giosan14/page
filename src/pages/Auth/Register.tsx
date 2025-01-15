@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -12,13 +12,26 @@ import "react-phone-input-2/lib/style.css";
 import Select from "react-select";
 import { Country, State, City } from "country-state-city";
 import Input from "../../components/Input/Input";
+import axios from "axios";
+import { simplifyCityName } from "../../utils/normalizeCityName";
 
 export const Register: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [phone, setPhone] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const [selectedState, setSelectedState] = useState(null);
+  const [postalCode, setPostalCode] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState({
+    value: "",
+    label: "",
+  });
+  const [selectedState, setSelectedState] = useState({
+    value: "",
+    label: "",
+  });
+  const [selectedCity, setSelectedCity] = useState({
+    value: "",
+    label: "",
+  });
 
   const navigate = useNavigate();
 
@@ -50,9 +63,9 @@ export const Register: React.FC = () => {
     addressNumber: Yup.string().required("Número de calle es obligatorio"),
   });
 
-  const handleRegister = async (values: typeof initialValues) => {
+  const handleRegister = async () => {
     setIsLoading(true);
-    if (values.firstName) {
+    if (selectedCity) {
       setTimeout(() => {
         setIsLoading(false);
         handleShowModal();
@@ -86,6 +99,34 @@ export const Register: React.FC = () => {
         })
       )
     : [];
+
+  const fetchPostalCode = async () => {
+    if (!selectedCity) return;
+
+    const normalizedCity = simplifyCityName(selectedCity.value);
+    try {
+      const response = await axios.get(
+        `https://api.zippopotam.us/${selectedCountry?.value}/${selectedState?.value}/${normalizedCity}`
+      );
+      const postalCodes = response.data.places.map(
+        (place: { "post code": string }) => place["post code"]
+      );
+      console.log("Códigos postales:", postalCodes);
+
+      setPostalCode(postalCodes[0] || "No disponible");
+    } catch (error) {
+      console.error("Error fetching postal code:", error);
+      setPostalCode("No disponible");
+    }
+  };
+
+  console.log("soy la city", selectedCity);
+
+  useEffect(() => {
+    if (selectedCity) {
+      fetchPostalCode();
+    }
+  }, [selectedCity]);
 
   return (
     <Formik
@@ -141,16 +182,20 @@ export const Register: React.FC = () => {
                   type="date"
                 />
                 <div className="w-full">
-                  <label className="text-gray-600 text-xs font-semibold">Teléfono</label>
+                  <label className="text-gray-600 text-xs font-semibold">
+                    Teléfono
+                  </label>
                   <PhoneInput
                     country={"us"}
-                    inputStyle={{width: '100%'}}
+                    inputStyle={{ width: "100%" }}
                     value={phone}
                     onChange={(phone) => setPhone(phone)}
                   />
                 </div>
                 <div>
-                  <label className="text-gray-600 text-xs font-semibold">Género</label>
+                  <label className="text-gray-600 text-xs font-semibold">
+                    Género
+                  </label>
                   <Select
                     options={genderOptions}
                     onChange={(option) =>
@@ -159,21 +204,25 @@ export const Register: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-gray-600 text-xs font-semibold">País</label>
+                  <label className="text-gray-600 text-xs font-semibold">
+                    País
+                  </label>
                   <Select
                     options={countryOptions}
                     onChange={(option) => {
-                      setSelectedCountry(option);
+                      setSelectedCountry(option ?? { value: "", label: "" });
                       setFieldValue("country", option?.value);
                     }}
                   />
                 </div>
                 <div>
-                  <label className="text-gray-600 text-xs font-semibold">Estado/Provincia</label>
+                  <label className="text-gray-600 text-xs font-semibold">
+                    Estado/Provincia
+                  </label>
                   <Select
                     options={stateOptions}
                     onChange={(option) => {
-                      setSelectedState(option);
+                      setSelectedState(option ?? { value: "", label: "" });
                       setFieldValue("state", option?.value);
                     }}
                   />
@@ -183,17 +232,22 @@ export const Register: React.FC = () => {
               {/* Columna 2 */}
               <div className="flex flex-col gap-4 w-full max-w-[400px]">
                 <div>
-                  <label className="text-gray-600 text-xs font-semibold">Ciudad</label>
+                  <label className="text-gray-600 text-xs font-semibold">
+                    Municipio/Delegación
+                  </label>
                   <Select
                     options={cityOptions}
-                    onChange={(option) => setFieldValue("city", option?.value)}
+                    onChange={(option) => {
+                      setSelectedCity(option ?? { value: "", label: "" });
+                      setFieldValue("city", option?.value);
+                    }}
                   />
                 </div>
-                <Input label="Código Postal" name="postalCode" type="text" />
                 <Input
-                  label="Municipio/Delegación"
-                  name="municipality"
+                  label="Código Postal"
+                  name="postalCode"
                   type="text"
+                  value={postalCode}
                 />
                 <Input label="Dirección 1" name="address1" type="text" />
                 <Input
@@ -206,7 +260,11 @@ export const Register: React.FC = () => {
           </div>
 
           <div className="w-full flex justify-center mt-12">
-            <Button type="submit" className="py-2 text-base">
+            <Button
+              type="submit"
+              className="py-2 text-base"
+              onClick={handleRegister}
+            >
               {isLoading ? <Spinner size="sm" /> : "Registrarse"}
             </Button>
           </div>

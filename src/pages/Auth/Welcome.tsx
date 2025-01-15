@@ -3,40 +3,12 @@ import { FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Welcome: React.FC = () => {
-  const [mainText, setMainText] = useState<string>("");
-  const [subText, setSubText] = useState<string>("");
-  const [showButtons, setShowButtons] = useState<boolean>(false); // Controla la visibilidad de los botones
+  const [showButtons, setShowButtons] = useState<boolean>(false); 
   const navigate = useNavigate();
   useEffect(() => {
-    const typeText = (
-      text: string,
-      setter: React.Dispatch<React.SetStateAction<string>>,
-      delay: number
-    ) => {
-      let i = 0;
-      const interval = setInterval(() => {
-        setter(text.slice(0, i + 1));
-        i++;
-        if (i >= text.length) {
-          clearInterval(interval);
-        }
-      }, delay);
-    };
-
-    typeText("Bienvenido a XinapX", setMainText, 100);
-
-    setTimeout(() => {
-      typeText(
-        "Por favor, indícanos qué tipo de usuario eres:",
-        setSubText,
-        50
-      );
-    }, 2000);
-
-    // Mostrar los botones después de que el texto se complete
     setTimeout(() => {
       setShowButtons(true);
-    }, 4000); // Ajusta el tiempo según la duración del texto
+    }, 100); 
   }, []);
 
   const handleUserType = (type: "Doctor" | "Paciente") => {
@@ -47,18 +19,19 @@ const Welcome: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center max-w-[800px] w-full">
       <div className="p-8 rounded-lg text-center">
-        <h1 className="text-7xl font-bold text-gray-800 mb-4">
+        {/* <h1 className="text-7xl font-bold text-gray-800 mb-4">
           {mainText.split("XinapX")[0]}
           {mainText.includes("XinapX") && (
             <span className="text-primary-color">XinapX</span>
           )}
-        </h1>
-
+        </h1> */}
+          <h1 className="text-7xl font-bold text-gray-800 mb-4">Bienvenido a <span className="text-primary-color" >XinapX</span></h1>
         <div className="p-6 flex w-full justify-center flex-col items-center">
           <FaBrain className="text-primary-color" size={45} />
           <p>XinapX</p>
         </div>
-        <p className="text-gray-600 mb-6 text-xl">{subText}</p>
+        {/* <p className="text-gray-600 mb-6 text-xl">{subText}</p> */}
+        <p className="text-gray-600 mb-6 text-xl">Por favor, indícanos qué tipo de usuario eres:</p>
       </div>
 
       {/* Botones con animación */}
