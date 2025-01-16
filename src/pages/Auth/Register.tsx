@@ -12,8 +12,7 @@ import "react-phone-input-2/lib/style.css";
 import Select from "react-select";
 import { Country, State, City } from "country-state-city";
 import Input from "../../components/Input/Input";
-import axios from "axios";
-import { simplifyCityName } from "../../utils/normalizeCityName";
+import { fetchPostalCode } from "../../services/auth/postalCodeService";
 
 export const Register: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -100,33 +99,18 @@ export const Register: React.FC = () => {
       )
     : [];
 
-  const fetchPostalCode = async () => {
-    if (!selectedCity) return;
-
-    const normalizedCity = simplifyCityName(selectedCity.value);
-    try {
-      const response = await axios.get(
-        `https://api.zippopotam.us/${selectedCountry?.value}/${selectedState?.value}/${normalizedCity}`
-      );
-      const postalCodes = response.data.places.map(
-        (place: { "post code": string }) => place["post code"]
-      );
-      console.log("Códigos postales:", postalCodes);
-
-      setPostalCode(postalCodes[0] || "No disponible");
-    } catch (error) {
-      console.error("Error fetching postal code:", error);
-      setPostalCode("No disponible");
-    }
-  };
-
-  console.log("soy la city", selectedCity);
-
-  useEffect(() => {
-    if (selectedCity) {
-      fetchPostalCode();
-    }
-  }, [selectedCity]);
+    useEffect(() => {
+      const updatePostalCode = async () => {
+        const code = await fetchPostalCode(
+          selectedCountry,
+          selectedState,
+          selectedCity,
+        );
+        setPostalCode(code);
+      };
+  
+      updatePostalCode();
+    }, [selectedCountry, selectedState, selectedCity]);
 
   return (
     <Formik
@@ -147,7 +131,7 @@ export const Register: React.FC = () => {
               <p>Te enviamos un correo para verificar tu cuenta</p>
               <p>Recuerda revisar tu carpeta de spam</p>
               <Button
-                onClick={() => navigate("/auth/form-doctor")}
+                onClick={() => navigate("/auth/data-doctor")}
                 className="py-2 w-full"
               >
                 Validar correo
@@ -173,7 +157,7 @@ export const Register: React.FC = () => {
                 cuenta para verificarla.
               </p>
             </div>
-            <div className="w-full flex justify-between gap-6">
+            <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
               {/* Columna 1 */}
               <div className="flex flex-col gap-4 w-full max-w-[400px]">
                 <Input
