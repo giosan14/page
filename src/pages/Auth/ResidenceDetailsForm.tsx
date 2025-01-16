@@ -29,7 +29,7 @@ const validationSchema = Yup.object({
   ),
 });
 
-const DoctorForm = () => {
+const ResidenceDetailsForm = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -63,7 +63,7 @@ const DoctorForm = () => {
 
           <p>¡Ya casi! Estas muy cerca de terminar tu proceso de registro</p>
           <Button
-            onClick={() => navigate("/auth/data-residence")}
+            onClick={() => navigate("/auth/email-validate")}
             className="py-2 w-full"
           >
             Continuar
@@ -77,15 +77,15 @@ const DoctorForm = () => {
       >
         {({ values }) => (
           <Form className="max-w-[820px] w-full p-6 flex flex-col mx-auto bg-white drop-shadow-card rounded-2xl">
-            <h1 className="text-xl mb-4">Registro de Profesionales</h1>
+            <h1 className="text-xl mb-4">Información de Atención Medica</h1>
             <span className="w-full flex justify-center">
               <FaFileMedical className="text-primary-color" size={50} />
             </span>
             <p className="mt-4">
-              En este apartado se validará como profenista médico apto para
-              registrarse en XinapX. Compruebe que ingreso correctamente sus
-              datos personales para verificar que las cédulas que agregue sean
-              válidas.
+              En este apartado debes agregar la residencia hospitales/clínicas o
+              consultorio privado en los cuales ofreces tu servicio. Ingresa
+              nombre de hospital/clínica o consultorio junto con la dirección en
+              la que reside.
             </p>
             <p>
               {" "}
@@ -180,7 +180,7 @@ const DoctorForm = () => {
 
             <div className="mt-6 w-full flex justify-center">
               <Button type="submit" className="py-2" onClick={handleSubmitForm}>
-              {isLoading ? <Spinner size="sm" /> : "Guardar"}
+                {isLoading ? <Spinner size="sm" /> : "Guardar"}
               </Button>
             </div>
           </Form>
@@ -190,4 +190,4 @@ const DoctorForm = () => {
   );
 };
 
-export default DoctorForm;
+export default ResidenceDetailsForm;

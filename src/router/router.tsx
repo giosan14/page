@@ -11,6 +11,7 @@ import Welcome from "../pages/Auth/Welcome";
 import { CreateAccount } from "../pages/Auth/CreateAccount";
 import { EmailValidate } from "../pages/Auth/EmailValidate";
 import DoctorForm from "../pages/Auth/DoctorForm";
+import ResidenceDetailsForm from "../pages/Auth/ResidenceDetailsForm";
 
 export const router = createBrowserRouter([
   {
@@ -61,8 +62,12 @@ export const router = createBrowserRouter([
             element: <EmailValidate />,
           },
           {
-            path: "form-doctor",
+            path: "data-doctor",
             element: <DoctorForm />,
+          },
+          {
+            path: "data-residence",
+            element: <ResidenceDetailsForm />,
           },
         ],
       },
