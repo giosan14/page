@@ -23,7 +23,7 @@ const Select: React.FC<SelectProps> = ({
 }) => {
   console.log(value)
   return (
-    <div className={`mb-4 w-full ${className}`}>
+    <div className={`w-full ${className}`}>
     <label className="text-gray-600 text-xs font-semibold">{label}</label>
     <select
       disabled={disabled}

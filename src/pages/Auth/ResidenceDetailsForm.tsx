@@ -4,35 +4,34 @@ import Button from "../../components/Button/Button";
 import { FaCheckCircle, FaFileMedical } from "react-icons/fa";
 import CustomModal from "../../components/CustomModal";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { City, Country, State } from "country-state-city";
+import { fetchPostalCode } from "../../services/auth/postalCodeService";
+import Select from "../../components/Select/Select";
+import Input from "../../components/Input/Input";
 import { Spinner } from "react-bootstrap";
-
-type Professional = {
-  licenseNumber: string;
-  specialty: string;
-};
-
-type FormValues = {
-  professionals: Professional[];
-};
-
-const initialValues: FormValues = {
-  professionals: [{ licenseNumber: "", specialty: "" }],
-};
-
-const validationSchema = Yup.object({
-  professionals: Yup.array().of(
-    Yup.object({
-      licenseNumber: Yup.string().required("Número de cédula es obligatorio"),
-      specialty: Yup.string().required("Especialidad es obligatoria"),
-    })
-  ),
-});
 
 const ResidenceDetailsForm = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [postalCode, setPostalCode] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState({
+    value: "",
+    label: "",
+  });
+  const [selectedState, setSelectedState] = useState({
+    value: "",
+    label: "",
+  });
+  const [selectedCity, setSelectedCity] = useState({
+    value: "",
+    label: "",
+  });
+
+  const handleShowModal = () => {
+    setShowModal(!showModal);
+  };
 
   const handleSubmitForm = () => {
     setIsLoading(true);
@@ -42,13 +41,39 @@ const ResidenceDetailsForm = () => {
     }, 2000);
   };
 
-  const handleShowModal = () => {
-    setShowModal(!showModal);
-  };
+  const countryOptions = Country.getAllCountries().map((country) => ({
+    value: country.isoCode,
+    label: country.name,
+  }));
 
-  const handleSubmit = (values: typeof initialValues) => {
-    console.log("Submitted values:", values);
-  };
+  const stateOptions = selectedCountry
+    ? State.getStatesOfCountry(selectedCountry.value).map((state) => ({
+        value: state.isoCode,
+        label: state.name,
+      }))
+    : [];
+
+  const cityOptions = selectedState
+    ? City.getCitiesOfState(selectedCountry?.value, selectedState?.value).map(
+        (city) => ({
+          value: city.name,
+          label: city.name,
+        })
+      )
+    : [];
+
+  useEffect(() => {
+    const updatePostalCode = async () => {
+      const code = await fetchPostalCode(
+        selectedCountry,
+        selectedState,
+        selectedCity
+      );
+      setPostalCode(code);
+    };
+
+    updatePostalCode();
+  }, [selectedCountry, selectedState, selectedCity]);
 
   return (
     <>
@@ -71,11 +96,51 @@ const ResidenceDetailsForm = () => {
         </div>
       </CustomModal>
       <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        initialValues={{
+          residences: [
+            {
+              type: "",
+              name: "",
+              country: "",
+              postalCode: "",
+              state: "",
+              city: "",
+              neighborhood: "",
+              street: "",
+              interiorNumber: "",
+              exteriorNumber: "",
+            },
+          ],
+        }}
+        validationSchema={Yup.object({
+          residences: Yup.array().of(
+            Yup.object({
+              type: Yup.string().required(
+                "El tipo de residencia es obligatorio"
+              ),
+              name: Yup.string().required(
+                "El nombre de la residencia es obligatorio"
+              ),
+              country: Yup.string().required("El país es obligatorio"),
+              postalCode: Yup.string().required(
+                "El código postal es obligatorio"
+              ),
+              state: Yup.string().required(
+                "El estado/provincia es obligatorio"
+              ),
+              city: Yup.string().required("La ciudad es obligatoria"),
+              neighborhood: Yup.string().required("La colonia es obligatoria"),
+              street: Yup.string().required("La calle es obligatoria"),
+              interiorNumber: Yup.string(),
+              exteriorNumber: Yup.string().required(
+                "El número exterior es obligatorio"
+              ),
+            })
+          ),
+        })}
+        onSubmit={(values) => console.log(values)}
       >
-        {({ values }) => (
+        {({ values, setFieldValue, handleChange }) => (
           <Form className="max-w-[820px] w-full p-6 flex flex-col mx-auto bg-white drop-shadow-card rounded-2xl">
             <h1 className="text-xl mb-4">Información de Atención Medica</h1>
             <span className="w-full flex justify-center">
@@ -87,102 +152,162 @@ const ResidenceDetailsForm = () => {
               nombre de hospital/clínica o consultorio junto con la dirección en
               la que reside.
             </p>
-            <p>
-              {" "}
-              Se requiere al menos una cédula ingresada para dar de alta su
-              registro en XinapX.
-            </p>
-            <FieldArray name="professionals">
+
+            <FieldArray name="residences">
               {({ push, remove }) => (
                 <div className="flex flex-col gap-6">
-                  {values.professionals.map((_, index) => (
+                  {values.residences.map((residence, index) => (
                     <div
                       key={index}
-                      className="flex flex-col sm:flex-row sm:items-end gap-4 border-b pb-4"
+                      className="flex flex-col gap-4 border-b pb-4"
                     >
-                      <div className="flex flex-col w-full">
-                        <label htmlFor={`professionals.${index}.licenseNumber`}>
-                          Número de Cédula Profesional
-                        </label>
-                        <Field
-                          name={`professionals.${index}.licenseNumber`}
-                          placeholder="Ingresa el número de cédula"
-                          className="border p-2 rounded"
-                        />
-                        {/* {(errors?.professionals as Professional[])[index]
-                        ?.licenseNumber &&
-                        touched.professionals?.[index]?.licenseNumber && (
-                            <div className="text-red-500 text-sm">
-                            {
-                                (errors.professionals as Professional[])[index]
-                                ?.licenseNumber
-                                }
-                          </div>
-                          )} */}
+                      <Input
+                        label="Tipo de Residencia"
+                        name={`residences.${index}.type`}
+                        type="text"
+                        placeholder="Clínica, Hospital, etc."
+                        value={residence.type}
+                        onChange={handleChange}
+                      />
+
+                      <Input
+                        label="Nombre de Residencia"
+                        name={`residences.${index}.name`}
+                        placeholder="Ingresa el nombre"
+                        value={residence.name}
+                        onChange={handleChange}
+                      />
+
+                      <div className="w-full text-center border-b border-gray-200">
+                        <h5>Ubicación</h5>
                       </div>
 
-                      <div className="flex flex-col w-full">
-                        <label htmlFor={`professionals.${index}.specialty`}>
-                          Especialidad
-                        </label>
-                        <Field
-                          as="select"
-                          name={`professionals.${index}.specialty`}
-                          className="border p-2 rounded"
-                        >
-                          <option value="">Selecciona una especialidad</option>
-                          <option value="Medicina General">
-                            Medicina General
-                          </option>
-                          <option value="Odontología">Odontología</option>
-                          <option value="Psicología">Psicología</option>
-                          {/* Agrega más opciones según sea necesario */}
-                        </Field>
-                        {/* {(errors?.professionals as Professional[])[index]
-                        ?.specialty &&
-                        touched.professionals?.[index]?.specialty && (
-                          <div className="text-red-500 text-sm">
-                          {
-                              (errors.professionals as Professional[])[index]
-                                ?.specialty
-                            }
-                            </div>
-                        )} */}
+                      <div className="flex w-full gap-4">
+                        <div className="w-full">
+                          <Select
+                            label="País"
+                            options={countryOptions}
+                            onChange={(option) => {
+                              setFieldValue(
+                                `residences.${index}.country`,
+                                option?.value
+                              );
+                              setSelectedCountry(option);
+                            }}
+                          />
+                        </div>
+                        <div className="w-full">
+                          <Select
+                            label="Estado/Provincia"
+                            options={stateOptions}
+                            onChange={(option) => {
+                              setFieldValue(
+                                `residences.${index}.state`,
+                                option?.value
+                              );
+                              setSelectedState(option);
+                            }}
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <Button
-                          type="button"
-                          onClick={() => remove(index)}
-                          className="py-2 px-3"
-                        >
-                          -
-                        </Button>
+
+                      <div className="flex w-full gap-4 items-center">
+                        <div className="w-full">
+                          <Select
+                            label="Ciudad"
+                            options={cityOptions}
+                            onChange={(option) => {
+                              setFieldValue(
+                                `residences.${index}.city`,
+                                option?.value
+                              );
+                              setSelectedCity(option);
+                            }}
+                          />
+                        </div>
+
+                        <Input
+                          label="Código Postal"
+                          name={`residences.${index}.postalCode`}
+                          placeholder="Código Postal"
+                          value={residence.postalCode}
+                          onChange={handleChange}
+                        />
+                        <Input
+                          label="Colonia"
+                          name={`residences.${index}.neighborhood`}
+                          placeholder="Colonia"
+                          value={residence.neighborhood}
+                          onChange={handleChange}
+                        />
                       </div>
+                      <div className="flex w-full items-center gap-4">
+                        <Input
+                          label="Calle"
+                          name={`residences.${index}.street`}
+                          placeholder="Calle"
+                          value={residence.street}
+                          onChange={handleChange}
+                        />
+
+                        <Input
+                          label="Número Interior"
+                          name={`residences.${index}.interiorNumber`}
+                          placeholder="Número Interior"
+                          value={residence.interiorNumber}
+                          onChange={handleChange}
+                        />
+
+                        <Input
+                          label="Número Exterior"
+                          name={`residences.${index}.exteriorNumber`}
+                          placeholder="Número Exterior"
+                          value={residence.exteriorNumber}
+                          onChange={handleChange}
+                        />
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => remove(index)}
+                        className="text-red-500"
+                      >
+                        Eliminar residencia
+                      </button>
                     </div>
                   ))}
-                  <div>
-                    <Button
-                      type="button"
-                      onClick={() =>
-                        push({
-                          licenseNumber: "",
-                          specialty: "",
-                        })
-                      }
-                      className="py-2"
-                    >
-                      Agregar más cédulas
-                    </Button>
-                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      push({
+                        type: "",
+                        name: "",
+                        country: "",
+                        postalCode: "",
+                        state: "",
+                        city: "",
+                        neighborhood: "",
+                        street: "",
+                        interiorNumber: "",
+                        exteriorNumber: "",
+                      })
+                    }
+                    className="py-2 px-4 bg-blue-500 text-white rounded"
+                  >
+                    Agregar residencia
+                  </button>
                 </div>
               )}
             </FieldArray>
 
-            <div className="mt-6 w-full flex justify-center">
-              <Button type="submit" className="py-2" onClick={handleSubmitForm}>
-                {isLoading ? <Spinner size="sm" /> : "Guardar"}
-              </Button>
-            </div>
+            <button
+              type="submit"
+              className="py-2 px-4 bg-green-500 text-white rounded mt-6"
+              onClick={handleSubmitForm}
+            >
+              {isLoading ? <Spinner/> : 'Guardar'}
+            </button>
           </Form>
         )}
       </Formik>
