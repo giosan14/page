@@ -26,7 +26,7 @@ const Input: React.FC<TextInputProps> = ({
 }) => {
   return (
     <div className={`w-full ${className}`}>
-      <label className="block text-gray-600 text-xs font-semibold">{label}</label>
+      <label className="block text-gray-600 text-xs font-semibold mb-[10px]">{label}</label>
       <input
         type={type}
         name={name}
