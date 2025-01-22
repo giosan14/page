@@ -9,7 +9,7 @@ import OTPInput from "react-otp-input";
 import classNames from "classnames";
 import Logo from "../../components/Logo";
 
-export const EmailValidate = () => {
+export const PhoneValidate = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [otp, setOtp] = useState("");
@@ -58,14 +58,14 @@ export const EmailValidate = () => {
       >
         <div className="flex flex-col text-center items-center p-10 gap-3">
           <FaCheckCircle className="text-primary-color text-[60px]" />
-          <h1 className="text-xl">Cuenta verificada con éxito</h1>
+          <h1 className="text-xl">Número de celular verificado con éxito</h1>
 
-          <p>Por favor, verifica tu número de celular</p>
+          <p>¡Terminamos!. Inicia sesión por favor</p>
           <Button
-            onClick={() => navigate("/auth/phone-validate")}
+            onClick={() => navigate("/auth/login")}
             className="py-2 w-full"
           >
-            Continuar
+            Iniciar sesión
           </Button>
         </div>
       </CustomModal>
@@ -73,11 +73,11 @@ export const EmailValidate = () => {
         <div className="mb-4 text-center">
           <Logo/>
           <h1 className="mb-4 text-xl font-medium">
-            Verifica tu correo electrónico
+            Verifica tu número de celular
           </h1>
           <p className="mb-7 mt-[-10px] font-light">
             Ingresa el código que se mando a{" "}
-            <span className="text-primary-color">email@example.com.</span>
+            <span className="text-primary-color">+52 554954551.</span>
           </p>
         </div>
 

@@ -12,6 +12,7 @@ import { CreateAccount } from "../pages/Auth/CreateAccount";
 import { EmailValidate } from "../pages/Auth/EmailValidate";
 import DoctorForm from "../pages/Auth/DoctorForm";
 import ResidenceDetailsForm from "../pages/Auth/ResidenceDetailsForm";
+import { PhoneValidate } from "../pages/Auth/PhoneValidate";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
           {
             path: "email-validate",
             element: <EmailValidate />,
+          },
+          {
+            path: "phone-validate",
+            element: <PhoneValidate />,
           },
           {
             path: "data-doctor",

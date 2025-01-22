@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import Logo from "../../components/Logo";
 
 const Welcome: React.FC = () => {
   const [showButtons, setShowButtons] = useState<boolean>(false); 
@@ -26,10 +26,7 @@ const Welcome: React.FC = () => {
           )}
         </h1> */}
           <h1 className="text-7xl font-bold text-gray-800 mb-4">Bienvenido a <span className="text-primary-color" >XinapX</span></h1>
-        <div className="p-6 flex w-full justify-center flex-col items-center">
-          <FaBrain className="text-primary-color" size={45} />
-          <p>XinapX</p>
-        </div>
+       <Logo/>
         {/* <p className="text-gray-600 mb-6 text-xl">{subText}</p> */}
         <p className="text-gray-600 mb-6 text-xl">Por favor, indícanos qué tipo de usuario eres:</p>
       </div>

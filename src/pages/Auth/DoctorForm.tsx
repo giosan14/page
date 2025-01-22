@@ -1,11 +1,12 @@
 import { Formik, Form, Field, FieldArray } from "formik";
 import * as Yup from "yup";
 import Button from "../../components/Button/Button";
-import { FaCheckCircle, FaFileMedical } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
 import CustomModal from "../../components/CustomModal";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Spinner } from "react-bootstrap";
+import Logo from "../../components/Logo";
 
 type Professional = {
   licenseNumber: string;
@@ -59,7 +60,7 @@ const DoctorForm = () => {
       >
         <div className="flex flex-col text-center items-center p-10 gap-3">
           <FaCheckCircle className="text-primary-color text-[60px]" />
-          <h1 className="text-xl">Datos profesionales guardados</h1>
+          <h1 className="text-xl">¡Datos profesionales guardados con éxito!</h1>
 
           <p>¡Ya casi! Estas muy cerca de terminar tu proceso de registro</p>
           <Button
@@ -77,24 +78,22 @@ const DoctorForm = () => {
       >
         {({ values }) => (
           <Form className="max-w-[820px] w-full p-6 flex flex-col mx-auto bg-white drop-shadow-card rounded-2xl">
-            <h1 className="text-xl mb-4">Registro de Profesionales</h1>
-            <span className="w-full flex justify-center">
-              <FaFileMedical className="text-primary-color" size={50} />
-            </span>
-            <p className="mt-4">
+            <Logo/>
+            <h1 className="text-xl mb-4 text-center">Registro de Profesionales</h1>
+            <p className="text-center">
               En este apartado se validará como profenista médico apto para
               registrarse en XinapX. Compruebe que ingreso correctamente sus
               datos personales para verificar que las cédulas que agregue sean
               válidas.
             </p>
-            <p>
+            <p className="text-center">
               {" "}
               Se requiere al menos una cédula ingresada para dar de alta su
               registro en XinapX.
             </p>
             <FieldArray name="professionals">
               {({ push, remove }) => (
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-6 mt-3">
                   {values.professionals.map((_, index) => (
                     <div
                       key={index}

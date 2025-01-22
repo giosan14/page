@@ -13,6 +13,7 @@ import Select from "react-select";
 import { Country, State, City } from "country-state-city";
 import Input from "../../components/Input/Input";
 import { fetchPostalCode } from "../../services/auth/postalCodeService";
+import Logo from "../../components/Logo";
 
 export const Register: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -127,14 +128,13 @@ export const Register: React.FC = () => {
           >
             <div className="flex flex-col text-center items-center p-10 gap-3">
               <FaCheckCircle className="text-primary-color text-[60px]" />
-              <h1 className="text-xl">¡Registro exitoso!</h1>
-              <p>Te enviamos un correo para verificar tu cuenta</p>
-              <p>Recuerda revisar tu carpeta de spam</p>
+              <h1 className="text-xl">¡Datos personales guardados con éxito!</h1>
+              <p>Por favor, llena el formulario de registro de profesionales </p>
               <Button
                 onClick={() => navigate("/auth/data-doctor")}
                 className="py-2 w-full"
               >
-                Validar correo
+                Continuar
               </Button>
             </div>
           </CustomModal>
@@ -146,10 +146,10 @@ export const Register: React.FC = () => {
             <IoIosArrowBack />
             Regresar
           </button>
-
-          <div className="flex flex-col sm:items-start items-center mt-10 gap-6">
-            <div className="w-full flex flex-col gap-3">
-              <h1 className="mb-0 mt-2 text-xl">
+          <Logo/>
+          <div className="flex flex-col sm:items-start items-center gap-6">
+            <div className="w-full flex flex-col gap-3 text-center">
+              <h1 className="mb-0 text-xl">
                 Por favor, llena este formulario para registrarte.
               </h1>
               <p className="mb-7">
