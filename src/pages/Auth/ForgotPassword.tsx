@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { Spinner } from "react-bootstrap";
 import CustomModal from "../../components/CustomModal";
+import Logo from "../../components/Logo";
 
 export const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -23,7 +24,6 @@ export const ForgotPassword: React.FC = () => {
   const navigate = useNavigate();
 
   const handleRecoveryPassword = async () => {
-
     setIsLoading(true);
     if (email) {
       setTimeout(() => {
@@ -72,7 +72,8 @@ export const ForgotPassword: React.FC = () => {
         <IoIosArrowBack />
         Regresar
       </button>
-      <div className="mt-24">
+      <Logo />
+      <div className="mt-5">
         <h1 className="mb-2 mt-2 text-xl">
           Ingresa tu correo eléctronico para restablecer tu contraseña
         </h1>
@@ -80,18 +81,18 @@ export const ForgotPassword: React.FC = () => {
           Te enviaremos instrucciones al correo electrónico asociado a tu cuenta
           para recuperarla
         </p>
-      <Input
-        label="Correo electrónico"
-        name="email"
-        onChange={(e) => setEmail(e.target.value)}
+        <Input
+          label="Correo electrónico"
+          name="email"
+          onChange={(e) => setEmail(e.target.value)}
         />
-        </div>
+      </div>
       <div className="w-full flex justify-center mt-12">
         <Button
           disabled={!email}
           onClick={handleRecoveryPassword}
           className="py-2 text-base"
-          >
+        >
           {isLoading ? <Spinner size="sm" /> : "Reestablecer contraseña"}
         </Button>
       </div>

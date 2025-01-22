@@ -11,7 +11,7 @@ import TextButton from "../../components/TextButton/TextButton";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import { GoogleLogin } from "@react-oauth/google";
-import { FaBrain } from "react-icons/fa";
+import Logo from "../../components/Logo";
 // import Button from "../../components/Button/Button";
 
 export const LoginPage = () => {
@@ -58,10 +58,7 @@ export const LoginPage = () => {
 
   return (
     <div className="max-w-[420px] w-full flex flex-col justify-center h-auto py-8 mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
-      <div className="flex w-full justify-center flex-col items-center">
-        <FaBrain className="text-primary-color" size={45} />
-        <p>XinapX</p>
-      </div>
+     <Logo/>
 
       <form
         className="px-12 w-full flex flex-col  text-center"

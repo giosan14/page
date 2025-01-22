@@ -10,6 +10,7 @@ import { Spinner } from "react-bootstrap";
 import { validatePassword } from "../../helpers/passwordValidation";
 import CustomModal from "../../components/CustomModal";
 import Input from "../../components/Input/Input";
+import Logo from "../../components/Logo";
 
 export const CreateAccount = () => {
   const navigate = useNavigate();
@@ -99,8 +100,9 @@ export const CreateAccount = () => {
         </div>
       </CustomModal>
       <div className="text-left">
-        <h1 className="mb-4 text-2xl font-bold">Primeros pasos</h1>
-        <p className="mb-7 mt-[-10px]">
+        <Logo />
+        <h1 className="mb-4 text-2xl font-bold text-center">Primeros pasos</h1>
+        <p className="mb-7 mt-[-10px] text-center">
           Por favor ingresa estos datos para crear tu cuenta.
         </p>
         <div className="mb-4">

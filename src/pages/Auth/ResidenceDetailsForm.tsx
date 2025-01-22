@@ -1,7 +1,8 @@
-import { Formik, Form, Field, FieldArray } from "formik";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Formik, Form, FieldArray } from "formik";
 import * as Yup from "yup";
 import Button from "../../components/Button/Button";
-import { FaCheckCircle, FaFileMedical } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
 import CustomModal from "../../components/CustomModal";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -10,6 +11,7 @@ import { fetchPostalCode } from "../../services/auth/postalCodeService";
 import Select from "../../components/Select/Select";
 import Input from "../../components/Input/Input";
 import { Spinner } from "react-bootstrap";
+import Logo from "../../components/Logo";
 
 const ResidenceDetailsForm = () => {
   const navigate = useNavigate();
@@ -17,14 +19,17 @@ const ResidenceDetailsForm = () => {
   const [showModal, setShowModal] = useState(false);
   const [postalCode, setPostalCode] = useState("");
   const [selectedCountry, setSelectedCountry] = useState({
+    id: 0,
     value: "",
     label: "",
   });
   const [selectedState, setSelectedState] = useState({
+    id: 0,
     value: "",
     label: "",
   });
   const [selectedCity, setSelectedCity] = useState({
+    id: 0,
     value: "",
     label: "",
   });
@@ -41,13 +46,15 @@ const ResidenceDetailsForm = () => {
     }, 2000);
   };
 
-  const countryOptions = Country.getAllCountries().map((country) => ({
+  const countryOptions = Country.getAllCountries().map((country, index) => ({
+    id: index,
     value: country.isoCode,
     label: country.name,
   }));
 
   const stateOptions = selectedCountry
-    ? State.getStatesOfCountry(selectedCountry.value).map((state) => ({
+    ? State.getStatesOfCountry(selectedCountry.value).map((state, index) => ({
+        id: index,
         value: state.isoCode,
         label: state.name,
       }))
@@ -55,7 +62,8 @@ const ResidenceDetailsForm = () => {
 
   const cityOptions = selectedState
     ? City.getCitiesOfState(selectedCountry?.value, selectedState?.value).map(
-        (city) => ({
+        (city, index) => ({
+          id: index,
           value: city.name,
           label: city.name,
         })
@@ -84,14 +92,14 @@ const ResidenceDetailsForm = () => {
       >
         <div className="flex flex-col text-center items-center p-10 gap-3">
           <FaCheckCircle className="text-primary-color text-[60px]" />
-          <h1 className="text-xl">Datos profesionales guardados</h1>
+          <h1 className="text-xl">¡Datos de residencia guardados con éxito!</h1>
 
-          <p>¡Ya casi! Estas muy cerca de terminar tu proceso de registro</p>
+          <p>Por favor, verifica tu correo electrónico</p>
           <Button
             onClick={() => navigate("/auth/email-validate")}
             className="py-2 w-full"
           >
-            Continuar
+            Verificar
           </Button>
         </div>
       </CustomModal>
@@ -142,11 +150,11 @@ const ResidenceDetailsForm = () => {
       >
         {({ values, setFieldValue, handleChange }) => (
           <Form className="max-w-[820px] w-full p-6 flex flex-col mx-auto bg-white drop-shadow-card rounded-2xl">
-            <h1 className="text-xl mb-4">Información de Atención Medica</h1>
-            <span className="w-full flex justify-center">
-              <FaFileMedical className="text-primary-color" size={50} />
-            </span>
-            <p className="mt-4">
+            <Logo />
+            <h1 className="text-xl mb-4 text-center">
+              Información de Atención Medica
+            </h1>
+            <p className="text-center">
               En este apartado debes agregar la residencia hospitales/clínicas o
               consultorio privado en los cuales ofreces tu servicio. Ingresa
               nombre de hospital/clínica o consultorio junto con la dirección en
@@ -186,27 +194,27 @@ const ResidenceDetailsForm = () => {
                         <div className="w-full">
                           <Select
                             label="País"
+                            name="country"
                             options={countryOptions}
-                            onChange={(option) => {
-                              setFieldValue(
-                                `residences.${index}.country`,
-                                option?.value
-                              );
-                              setSelectedCountry(option);
+                            value={countryOptions.find((option) => option.value === residence.country)?.value || ""}
+                            onChange={(e) => {
+                              const selectedValue = e.target.value; 
+                              setFieldValue(`residences.${index}.country`, selectedValue);
                             }}
+                            
                           />
                         </div>
                         <div className="w-full">
                           <Select
                             label="Estado/Provincia"
+                            name="state"
                             options={stateOptions}
-                            onChange={(option) => {
-                              setFieldValue(
-                                `residences.${index}.state`,
-                                option?.value
-                              );
-                              setSelectedState(option);
+                            value={stateOptions.find((option) => option.value === residence.state)?.value || ""}
+                            onChange={(e) => {
+                              const selectedValue = e.target.value; 
+                              setFieldValue(`residences.${index}.state`, selectedValue);
                             }}
+                            
                           />
                         </div>
                       </div>
@@ -215,14 +223,14 @@ const ResidenceDetailsForm = () => {
                         <div className="w-full">
                           <Select
                             label="Ciudad"
+                            name="city"
                             options={cityOptions}
-                            onChange={(option) => {
-                              setFieldValue(
-                                `residences.${index}.city`,
-                                option?.value
-                              );
-                              setSelectedCity(option);
+                            value={cityOptions.find((option) => option.value === residence.city)?.value || ""}
+                            onChange={(e) => {
+                              const selectedValue = e.target.value; 
+                              setFieldValue(`residences.${index}.city`, selectedValue);
                             }}
+                            
                           />
                         </div>
 
@@ -306,7 +314,7 @@ const ResidenceDetailsForm = () => {
               className="py-2 px-4 bg-green-500 text-white rounded mt-6"
               onClick={handleSubmitForm}
             >
-              {isLoading ? <Spinner/> : 'Guardar'}
+              {isLoading ? <Spinner /> : "Guardar"}
             </button>
           </Form>
         )}
