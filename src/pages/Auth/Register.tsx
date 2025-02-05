@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -12,14 +12,12 @@ import "react-phone-input-2/lib/style.css";
 import Select from "react-select";
 import { Country, State, City } from "country-state-city";
 import Input from "../../components/Input/Input";
-import { fetchPostalCode } from "../../services/auth/postalCodeService";
 import Logo from "../../components/Logo";
 
 export const Register: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [phone, setPhone] = useState("");
-  const [postalCode, setPostalCode] = useState("");
   const [selectedCountry, setSelectedCountry] = useState({
     value: "",
     label: "",
@@ -100,18 +98,18 @@ export const Register: React.FC = () => {
       )
     : [];
 
-    useEffect(() => {
-      const updatePostalCode = async () => {
-        const code = await fetchPostalCode(
-          selectedCountry,
-          selectedState,
-          selectedCity,
-        );
-        setPostalCode(code);
-      };
+    // useEffect(() => {
+    //   const updatePostalCode = async () => {
+    //     const code = await fetchPostalCode(
+    //       selectedCountry,
+    //       selectedState,
+    //       selectedCity,
+    //     );
+    //     setPostalCode(code);
+    //   };
   
-      updatePostalCode();
-    }, [selectedCountry, selectedState, selectedCity]);
+    //   updatePostalCode();
+    // }, [selectedCountry, selectedState, selectedCity]);
 
   return (
     <Formik
@@ -231,7 +229,7 @@ export const Register: React.FC = () => {
                   label="Código Postal"
                   name="postalCode"
                   type="text"
-                  value={postalCode}
+                  maxLength={7}
                 />
                 <Input label="Dirección 1" name="address1" type="text" />
                 <Input
