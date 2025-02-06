@@ -44,7 +44,6 @@ export const ResetPassword = () => {
   };
 
   const handleResetPassword = async () => {
-
     setIsLoading(true);
     if (formData?.password && formData?.confirmPassword) {
       setTimeout(() => {
@@ -78,7 +77,7 @@ export const ResetPassword = () => {
   return (
     <div className="max-w-[520px] w-full p-6 flex flex-col justify-center h-[620px] pb-6 mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
       <CustomModal
-        className="max-w-[370px]"
+        className="w-full"
         showModal={showModal}
         handleClose={handleShowModal}
       >

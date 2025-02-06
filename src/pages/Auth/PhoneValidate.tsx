@@ -52,7 +52,7 @@ export const PhoneValidate = () => {
   return (
     <div className="max-w-[520px] w-full p-6 flex flex-col justify-start h-auto pb-6 mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
       <CustomModal
-        className="max-w-[370px]"
+        className="w-full"
         showModal={showModal}
         handleClose={handleShowModal}
       >
@@ -71,7 +71,7 @@ export const PhoneValidate = () => {
       </CustomModal>
       <div className="text-left flex flex-col h-full">
         <div className="mb-4 text-center">
-          <Logo/>
+          <Logo />
           <h1 className="mb-4 text-xl font-medium">
             Verifica tu número de celular
           </h1>
@@ -88,10 +88,11 @@ export const PhoneValidate = () => {
               if (/^\d*$/.test(value)) setOtp(value); // Validate only numbers
             }}
             numInputs={6}
+            renderSeparator={'-'}
             renderInput={(props) => (
               <input
                 {...props}
-                className="border border-gray-300 rounded-md text-center !w-[70px] !h-[70px] text-lg ml-3"
+                className="border border-gray-300 rounded-md text-center !w-full !max-w-[70px] !h-[70px] text-lg"
                 maxLength={1}
               />
             )}
@@ -101,10 +102,12 @@ export const PhoneValidate = () => {
         <div className="my-4 flex justify-center">
           <button
             onClick={handleResendCode}
-            className={classNames(`py-2 px-6 mt-4 bg-transparent text-primary-color rounded-md hover:underline`, {
-                "opacity-50 ":!canResend,
-  
-            })}
+            className={classNames(
+              `py-2 px-6 mt-4 bg-transparent text-primary-color rounded-md hover:underline`,
+              {
+                "opacity-50 ": !canResend,
+              }
+            )}
             disabled={!canResend}
           >
             {canResend ? "Reenviar código" : `Reenviar en ${timer}s`}

@@ -12,11 +12,11 @@ export const AuthLayout = () => {
   // }
   
   return (
-    <div className="flex justify-center relative px-2">
-      <div className="w-full max-w-[1300px] flex flex-col pb-4">
-      <div className="h-[500px] mt-[70px] mb-4">
+    <div className="flex justify-center relative px-2 py-5 min-h-screen">
+      <div className="w-full max-w-[1300px] justify-center flex flex-col flex-1">
+      <div className="mb-4">
           <div
-            className={`w-full flex justify-center px-1 left-appear`}
+            className={`px-1 flex items-center justify-center left-appear`}
           >
             <Outlet />
           </div>

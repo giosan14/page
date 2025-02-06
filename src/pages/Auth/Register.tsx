@@ -98,18 +98,18 @@ export const Register: React.FC = () => {
       )
     : [];
 
-    // useEffect(() => {
-    //   const updatePostalCode = async () => {
-    //     const code = await fetchPostalCode(
-    //       selectedCountry,
-    //       selectedState,
-    //       selectedCity,
-    //     );
-    //     setPostalCode(code);
-    //   };
-  
-    //   updatePostalCode();
-    // }, [selectedCountry, selectedState, selectedCity]);
+  // useEffect(() => {
+  //   const updatePostalCode = async () => {
+  //     const code = await fetchPostalCode(
+  //       selectedCountry,
+  //       selectedState,
+  //       selectedCity,
+  //     );
+  //     setPostalCode(code);
+  //   };
+
+  //   updatePostalCode();
+  // }, [selectedCountry, selectedState, selectedCity]);
 
   return (
     <Formik
@@ -120,14 +120,18 @@ export const Register: React.FC = () => {
       {({ setFieldValue }) => (
         <Form className="max-w-[820px] w-full p-6 flex flex-col justify-start h-auto mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
           <CustomModal
-            className="max-w-[370px]"
+            className="w-full"
             showModal={showModal}
             handleClose={handleShowModal}
           >
             <div className="flex flex-col text-center items-center p-10 gap-3">
               <FaCheckCircle className="text-primary-color text-[60px]" />
-              <h1 className="text-xl">¡Datos personales guardados con éxito!</h1>
-              <p>Por favor, llena el formulario de registro de profesionales </p>
+              <h1 className="text-xl">
+                ¡Datos personales guardados con éxito!
+              </h1>
+              <p>
+                Por favor, llena el formulario de registro de profesionales{" "}
+              </p>
               <Button
                 onClick={() => navigate("/auth/data-doctor")}
                 className="py-2 w-full"
@@ -144,7 +148,7 @@ export const Register: React.FC = () => {
             <IoIosArrowBack />
             Regresar
           </button>
-          <Logo/>
+          <Logo />
           <div className="flex flex-col sm:items-start items-center gap-6">
             <div className="w-full flex flex-col gap-3 text-center">
               <h1 className="mb-0 text-xl">
