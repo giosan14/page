@@ -96,9 +96,9 @@ const ResidenceDetailsForm = () => {
   // }, [selectedCountry, selectedState, selectedCity]);
 
   return (
-    <>
+    <div>
       <CustomModal
-        className="max-w-[370px]"
+        className="w-full"
         showModal={showModal}
         handleClose={handleShowModal}
       >
@@ -204,7 +204,7 @@ const ResidenceDetailsForm = () => {
                           <h5>Ubicación</h5>
                         </div>
 
-                        <div className="flex w-full gap-4">
+                        <div className="flex flex-col sm:flex-row w-full gap-4">
                           <div className="w-full">
                             <Select
                               label="País"
@@ -259,7 +259,7 @@ const ResidenceDetailsForm = () => {
                           </div>
                         </div>
 
-                        <div className="flex w-full gap-4 items-center">
+                        <div className="flex flex-col sm:flex-row w-full gap-4 items-center">
                           <div className="w-full">
                             <Select
                               label="Ciudad"
@@ -295,7 +295,7 @@ const ResidenceDetailsForm = () => {
                             onChange={handleChange}
                           />
                         </div>
-                        <div className="flex w-full items-center gap-4">
+                        <div className="flex flex-col sm:flex-row w-full items-center gap-4">
                           <Input
                             label="Calle"
                             name={`residences.${index}.street`}
@@ -366,7 +366,7 @@ const ResidenceDetailsForm = () => {
           );
         }}
       </Formik>
-    </>
+    </div>
   );
 };
 

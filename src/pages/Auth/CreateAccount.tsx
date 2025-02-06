@@ -82,7 +82,7 @@ export const CreateAccount = () => {
   return (
     <div className="max-w-[520px] w-full p-6 flex flex-col justify-center h-auto pb-6 mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
       <CustomModal
-        className="max-w-[370px]"
+        className="w-full"
         showModal={showModal}
         handleClose={handleShowModal}
       >

@@ -54,7 +54,7 @@ const DoctorForm = () => {
   return (
     <>
       <CustomModal
-        className="max-w-[370px]"
+        className="w-full"
         showModal={showModal}
         handleClose={handleShowModal}
       >
@@ -78,8 +78,10 @@ const DoctorForm = () => {
       >
         {({ values }) => (
           <Form className="max-w-[820px] w-full p-6 flex flex-col mx-auto bg-white drop-shadow-card rounded-2xl">
-            <Logo/>
-            <h1 className="text-xl mb-4 text-center">Registro de Profesionales</h1>
+            <Logo />
+            <h1 className="text-xl mb-4 text-center">
+              Registro de Profesionales
+            </h1>
             <p className="text-center">
               En este apartado se validará como profenista médico apto para
               registrarse en XinapX. Compruebe que ingreso correctamente sus
@@ -159,7 +161,7 @@ const DoctorForm = () => {
                       </div>
                     </div>
                   ))}
-                  <div>
+                  <div className="w-full flex justify-center  sm:justify-start">
                     <Button
                       type="button"
                       onClick={() =>
@@ -179,7 +181,7 @@ const DoctorForm = () => {
 
             <div className="mt-6 w-full flex justify-center">
               <Button type="submit" className="py-2" onClick={handleSubmitForm}>
-              {isLoading ? <Spinner size="sm" /> : "Guardar"}
+                {isLoading ? <Spinner size="sm" /> : "Guardar"}
               </Button>
             </div>
           </Form>
