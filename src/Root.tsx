@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ToastContainer } from 'react-toastify';
 
 export const Root = () => {
 
@@ -13,6 +14,7 @@ export const Root = () => {
   return (
     <main>
       <Outlet />
+      <ToastContainer position='bottom-center' />
     </main>
   )
 }
