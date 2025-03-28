@@ -11,20 +11,16 @@ import { validatePassword } from "../../helpers/passwordValidation";
 import CustomModal from "../../components/CustomModal";
 import Input from "../../components/Input/Input";
 import Logo from "../../components/Logo";
+import authStore from "../../stores/auth.store";
 
 export const CreateAccount = () => {
   const navigate = useNavigate();
-  // const { showErrorAlert } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
-
+  const setBasicInfo = authStore((state) => state.setBasicInfo);
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token");
   console.log(token);
   const [showModal, setShowModal] = useState(false);
-  // const { updatePassword, isLoading } = useAuthStore((state) => ({
-  //   updatePassword: state.updatePassword,
-  //   isLoading: state.isLoading,
-  // }));
 
   const [formData, setFormData] = useState({
     name: "",
@@ -46,6 +42,9 @@ export const CreateAccount = () => {
       ...formData,
       [name]: value,
     });
+    setBasicInfo({
+      [name]: value, 
+    });
   };
 
   const handleCreateAccount = async () => {
@@ -56,16 +55,6 @@ export const CreateAccount = () => {
         handleShowModal();
       }, 1500);
     }
-    // try {
-    //   const response = await updatePassword(token ?? "", formData.password);
-
-    //   handleShowModal();
-
-    //   // showErrorAlert(passwordMessage);
-    //   console.log(response);
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   // Llamamos a la función de validación
