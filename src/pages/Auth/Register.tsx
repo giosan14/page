@@ -13,11 +13,17 @@ import Select from "react-select";
 import { Country, State, City } from "country-state-city";
 import Input from "../../components/Input/Input";
 import Logo from "../../components/Logo";
+import authStore from "../../stores/auth.store";
+import { authApi } from "../../api/api-client";
+import { toast } from "react-toastify";
 
 export const Register: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [phone, setPhone] = useState("");
+  const setBasicInfo = authStore((state) => state.setBasicInfo);
+  const basicInfo = authStore((state) => state.basicInfo);
+
   const [selectedCountry, setSelectedCountry] = useState({
     value: "",
     label: "",
@@ -30,6 +36,8 @@ export const Register: React.FC = () => {
     value: "",
     label: "",
   });
+  console.log(selectedCity, phone);
+  
 
   const navigate = useNavigate();
 
@@ -44,9 +52,14 @@ export const Register: React.FC = () => {
     state: "",
     city: "",
     postalCode: "",
-    municipality: "",
+    // municipality: "",
     address1: "",
     addressNumber: "",
+  };
+
+  const handleFormikChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setBasicInfo({ [name]: value });
   };
 
   const validationSchema = Yup.object({
@@ -61,20 +74,10 @@ export const Register: React.FC = () => {
     addressNumber: Yup.string().required("Número de calle es obligatorio"),
   });
 
-  const handleRegister = async () => {
-    setIsLoading(true);
-    if (selectedCity) {
-      setTimeout(() => {
-        setIsLoading(false);
-        handleShowModal();
-      }, 1500);
-    }
-  };
-
   const genderOptions = [
-    { value: "male", label: "Masculino" },
-    { value: "female", label: "Femenino" },
-    { value: "other", label: "Otro" },
+    { value: "Masculino", label: "Masculino" },
+    { value: "Femenino", label: "Femenino" },
+    { value: "otro", label: "Otro" },
   ];
 
   const countryOptions = Country.getAllCountries().map((country) => ({
@@ -111,11 +114,49 @@ export const Register: React.FC = () => {
   //   updatePostalCode();
   // }, [selectedCountry, selectedState, selectedCity]);
 
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    // Creamos el objeto con la data combinada de Formik y Zustand
+    const registerData = {
+      ...basicInfo,
+    };
+
+    try {
+      const response = await authApi.register(registerData); // Llamada al servicio
+      console.log("Registro exitoso:", response);
+      handleShowModal();
+      setBasicInfo({
+        type: "",
+        name: "",
+        lastname: "",
+        phone: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        birthday: "",
+        gender: "",
+        country: "",
+        state: "",
+        city: "",
+        postalCode: "",
+        // municipality: "",
+        address1: "",
+        addressNumber: "",
+      });
+      // Manejar lógica después del registro exitoso (navegación, mensajes, etc.)
+    } catch (error) {
+      console.error("Error al registrar:", error);
+      toast.error("Ocurrio un error al registrarse");
+      // Manejar errores aquí
+    }
+    setIsLoading(false);
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={handleRegister}
+      onSubmit={handleSubmit}
     >
       {({ setFieldValue }) => (
         <Form className="max-w-[820px] w-full p-6 flex flex-col justify-start h-auto mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
@@ -166,6 +207,8 @@ export const Register: React.FC = () => {
                   label="Fecha de nacimiento"
                   name="birthday"
                   type="date"
+                  value={basicInfo.birthday}
+                  onChange={handleFormikChange}
                 />
                 <div className="w-full">
                   <label className="text-gray-600 text-xs font-semibold">
@@ -174,8 +217,11 @@ export const Register: React.FC = () => {
                   <PhoneInput
                     country={"us"}
                     inputStyle={{ width: "100%" }}
-                    value={phone}
-                    onChange={(phone) => setPhone(phone)}
+                    value={basicInfo.phone}
+                    onChange={(phone) => {
+                      setPhone(phone);
+                      setBasicInfo({ phone });
+                    }}
                   />
                 </div>
                 <div>
@@ -184,9 +230,11 @@ export const Register: React.FC = () => {
                   </label>
                   <Select
                     options={genderOptions}
-                    onChange={(option) =>
-                      setFieldValue("gender", option?.value)
-                    }
+                    value={genderOptions.find((gender) => gender.value === basicInfo.gender)}
+                    onChange={(option) => {
+                      setFieldValue("gender", option?.value);
+                      setBasicInfo({ gender: option?.value });
+                    }}
                   />
                 </div>
                 <div>
@@ -195,9 +243,11 @@ export const Register: React.FC = () => {
                   </label>
                   <Select
                     options={countryOptions}
+                    value={countryOptions.find((country) => country.value === basicInfo.country)}
                     onChange={(option) => {
                       setSelectedCountry(option ?? { value: "", label: "" });
                       setFieldValue("country", option?.value);
+                      setBasicInfo({ country: option?.value });
                     }}
                   />
                 </div>
@@ -207,10 +257,13 @@ export const Register: React.FC = () => {
                   </label>
                   <Select
                     options={stateOptions}
+                    value={stateOptions.find((state) => state.value === basicInfo.state)}
                     onChange={(option) => {
                       setSelectedState(option ?? { value: "", label: "" });
                       setFieldValue("state", option?.value);
+                      setBasicInfo({ state: option?.value });
                     }}
+                    isDisabled={!selectedCountry}
                   />
                 </div>
               </div>
@@ -223,23 +276,36 @@ export const Register: React.FC = () => {
                   </label>
                   <Select
                     options={cityOptions}
+                    value={cityOptions.find((city) => city.value === basicInfo.city)}
                     onChange={(option) => {
                       setSelectedCity(option ?? { value: "", label: "" });
                       setFieldValue("city", option?.value);
+                      setBasicInfo({ city: option?.value });
                     }}
+                    isDisabled={!selectedState}
                   />
                 </div>
                 <Input
                   label="Código Postal"
                   name="postalCode"
                   type="text"
+                  value={basicInfo.postalCode}
                   maxLength={7}
+                  onChange={handleFormikChange}
                 />
-                <Input label="Dirección 1" name="address1" type="text" />
+                <Input
+                  label="Dirección 1"
+                  name="address1"
+                  type="text"
+                  value={basicInfo.address1}
+                  onChange={handleFormikChange}
+                />
                 <Input
                   label="Número de calle"
                   name="addressNumber"
                   type="text"
+                  value={basicInfo.addressNumber}
+                  onChange={handleFormikChange}
                 />
               </div>
             </div>
@@ -249,7 +315,8 @@ export const Register: React.FC = () => {
             <Button
               type="submit"
               className="py-2 text-base"
-              onClick={handleRegister}
+              onClick={handleSubmit}
+              disabled={isLoading}
             >
               {isLoading ? <Spinner size="sm" /> : "Registrarse"}
             </Button>

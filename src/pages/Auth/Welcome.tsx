@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../components/Logo";
+import authStore from "../../stores/auth.store";
 
 const Welcome: React.FC = () => {
-  const [showButtons, setShowButtons] = useState<boolean>(false); 
+  const [showButtons, setShowButtons] = useState<boolean>(false);
   const navigate = useNavigate();
+  const setBasicInfo = authStore((state) => state.setBasicInfo);
   useEffect(() => {
     setTimeout(() => {
       setShowButtons(true);
-    }, 100); 
+    }, 100);
   }, []);
 
   const handleUserType = (type: "Doctor" | "Paciente") => {
     console.log(`El usuario seleccionó: ${type}`);
+    // Actualizamos el tipo en el estado global
+    setBasicInfo({ type });
     navigate(`/auth/create-account`);
   };
 
@@ -25,10 +29,14 @@ const Welcome: React.FC = () => {
             <span className="text-primary-color">XinapX</span>
           )}
         </h1> */}
-          <h1 className="text-7xl font-bold text-gray-800 mb-4">Bienvenido a <span className="text-primary-color" >XinapX</span></h1>
-       <Logo/>
+        <h1 className="text-7xl font-bold text-gray-800 mb-4">
+          Bienvenido a <span className="text-primary-color">XinapX</span>
+        </h1>
+        <Logo />
         {/* <p className="text-gray-600 mb-6 text-xl">{subText}</p> */}
-        <p className="text-gray-600 mb-6 text-xl">Por favor, indícanos qué tipo de usuario eres:</p>
+        <p className="text-gray-600 mb-6 text-xl">
+          Por favor, indícanos qué tipo de usuario eres:
+        </p>
       </div>
 
       {/* Botones con animación */}
