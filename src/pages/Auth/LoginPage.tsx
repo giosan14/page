@@ -18,18 +18,12 @@ export const LoginPage = () => {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { email, password } = event.target as typeof event.target & {
-      email: { value: string };
-      password: { value: string };
-    };
-  
     setIsLoading(true);
   
     try {
       if (email && password) {
-        console.log(email.value, password.value);
-        await authApi.login(email.value.trim(), password.value.trim());
-        localStorage.removeItem("error");
+        console.log(email, password);  
+        await authApi.login(email, password);  
         navigate("/dashboard"); 
       }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,10 +34,6 @@ export const LoginPage = () => {
     }
   };
   
-  if (isLoading) {
-    return <div>Cargando..</div>;
-  }
-
   return (
     <div className="max-w-[420px] w-full flex flex-col justify-center h-auto py-8 mx-auto bg-white drop-shadow-card rounded-2xl left-appear">
      <Logo/>
